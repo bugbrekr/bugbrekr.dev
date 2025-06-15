@@ -19,23 +19,24 @@ jobs:
       run: npm ci
     - name: Build project
       run: npm run build
-    # - name: Deploy to homeserver
-    #   uses: appleboy/ssh-action@v1.0.3
-    #   with:
-    #     host: ${{ secrets.SSH_HOST }}
-    #     username: ${{ secrets.SSH_USERNAME }}
-    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #     script: |
-    #       # Create backup of current deployment
-    #       if [ -d "${{ secrets.DEPLOY_PATH }}" ]; then
-    #         cp -r ${{ secrets.DEPLOY_PATH }} ${{ secrets.DEPLOY_PATH }}.backup.$(date +%Y%m%d_%H%M%S)
-    #       fi
+        - name: Deploy to homeserver
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: ${{ secrets.PORT }}
+        script: |
+          # Create backup of current deployment
+          if [ -d "${{ secrets.DEPLOY_PATH }}" ]; then
+            cp -r ${{ secrets.DEPLOY_PATH }} ${{ secrets.DEPLOY_PATH }}.backup.$(date +%Y%m%d_%H%M%S)
+          fi
           
-    #       # Create deploy directory if it doesn't exist
-    #       mkdir -p ${{ secrets.DEPLOY_PATH }}
+          # Create deploy directory if it doesn't exist
+          mkdir -p ${{ secrets.DEPLOY_PATH }}
           
-    #       # Clear current deployment
-    #       rm -rf ${{ secrets.DEPLOY_PATH }}/*
+          # Clear current deployment
+          rm -rf ${{ secrets.DEPLOY_PATH }}/*
     - name: Copy files to homeserver
       uses: appleboy/scp-action@v0.1.7
       with:
