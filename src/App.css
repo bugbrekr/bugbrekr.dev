@@ -6,5 +6,8 @@
 }
 
 a {
-  color: #A7ACF6;
+  color: #D1D4FA;
+}
+a:hover {
+  color: #A7ACF6; 
 }
