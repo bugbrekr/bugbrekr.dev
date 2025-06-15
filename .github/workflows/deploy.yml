@@ -19,13 +19,12 @@ jobs:
       run: npm ci
     - name: Build project
       run: npm run build
-        - name: Deploy to homeserver
+    - name: Deploy to homeserver
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: ${{ secrets.PORT }}
         script: |
           # Create backup of current deployment
           if [ -d "${{ secrets.DEPLOY_PATH }}" ]; then
