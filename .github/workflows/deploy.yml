@@ -1,0 +1,47 @@
+name: Build and Deploy to Homeserver
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Build project
+      run: npm run build
+    # - name: Deploy to homeserver
+    #   uses: appleboy/ssh-action@v1.0.3
+    #   with:
+    #     host: ${{ secrets.SSH_HOST }}
+    #     username: ${{ secrets.SSH_USERNAME }}
+    #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     script: |
+    #       # Create backup of current deployment
+    #       if [ -d "${{ secrets.DEPLOY_PATH }}" ]; then
+    #         cp -r ${{ secrets.DEPLOY_PATH }} ${{ secrets.DEPLOY_PATH }}.backup.$(date +%Y%m%d_%H%M%S)
+    #       fi
+          
+    #       # Create deploy directory if it doesn't exist
+    #       mkdir -p ${{ secrets.DEPLOY_PATH }}
+          
+    #       # Clear current deployment
+    #       rm -rf ${{ secrets.DEPLOY_PATH }}/*
+    - name: Copy files to homeserver
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "dist/*"
+        target: ${{ secrets.DEPLOY_PATH }}
+        strip_components: 1
