@@ -6,10 +6,12 @@ function App() {
 
   return (
     <>
-      <h1>Welcome to BugBrekr's personal hosting space!</h1>
+    <div className="font-[SourceCodePro]">
+      <h1 className="mb-4 text-4xl font-bold">Welcome to BugBrekr's Personal Hosting Space!</h1>
       <text>This landing page is still (and might forever be) under construction, so check back later. <i>or not.</i></text>
-      <h2>Contact me at:</h2>
+      <h2 className="mt-4 mb-1 text-2xl font-bold">Contact me at:</h2>
       <p>Email: <a href="mailto:me@bugbrekr.dev">me@bugbrekr.dev</a></p>
+    </div>
     </>
   )
 }
