@@ -17,5 +17,5 @@ body {
   display: flex;
   place-items: center;
   min-height: 100vh;
-  background-color: light-dark(white, #001010);
+  background-color: light-dark(white, #001717);
 }
